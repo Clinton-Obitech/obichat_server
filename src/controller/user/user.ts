@@ -34,8 +34,9 @@ async (req: Request<SearchParams>, res: Response) =>
         }
 
         const user = await Search(req.params?.username)
+        const users = await Users(req.user?.id)
 
-        return res.status(200).json(user)
+        return res.status(200).json({user, users})
 
     } catch (err) {
         console.error(err)
