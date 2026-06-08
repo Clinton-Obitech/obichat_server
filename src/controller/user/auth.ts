@@ -18,7 +18,7 @@ async (req: Request<{}, {}, RegisterBodyType>, res: Response) =>
         }
 
         const user = await User(result.user?.id)
-        const users = await Users()
+        const users = await Users(result.user?.id)
 
         const obichatToken = jwt.sign(
             {id: result.user?.id,
@@ -61,7 +61,7 @@ async (req: Request<{}, {}, LoginBodyType>, res: Response) =>
         }
 
         const user = await User(result.user?.id)
-        const users = await Users()
+        const users = await Users(result.user?.id)
 
         const obichatToken = jwt.sign(
             {id: result.user?.id,
