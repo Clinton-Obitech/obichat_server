@@ -80,10 +80,15 @@ io.on("connection", (socket) => {
         .select("*")
         .single();
 
-        if (error) return console.error(error);
+        let msgError = "";
+
+        if (error) {
+            msgError = "message not sent";
+            return console.error(error)
+        }
 
         if (recieverSocketId) {
-            io.to(recieverSocketId).emit("receive_message", data)
+            io.to(recieverSocketId).emit("receive_message", data, msgError ? msgError : "")
         }
 
         socket.emit("receive_message", data)
