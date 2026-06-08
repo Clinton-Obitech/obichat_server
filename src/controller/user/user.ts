@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { Chat, User, Users } from "../../lib/user.js"
+import { Chat, Search, User, Users } from "../../lib/user.js"
 
 export const UserController = 
 async (req: Request, res: Response) => 
@@ -20,6 +20,29 @@ async (req: Request, res: Response) =>
     }
 }
 
+type SearchParams = {
+    username: string;
+}
+
+export const SearchController = 
+async (req: Request<SearchParams>, res: Response) => 
+{
+    try {
+
+        if (!req.user) {
+            return res.status(401)
+        }
+
+        const user = await Search(req.params?.username)
+
+        return res.status(200).json(user)
+
+    } catch (err) {
+        console.error(err)
+        return res.status(500)
+    }
+}
+
 export const UsersController = 
 async (req: Request, res: Response) => 
 {
@@ -29,7 +52,7 @@ async (req: Request, res: Response) =>
             return res.status(401)
         }
 
-        const users = await Users()
+        const users = await Users(req.user?.id)
 
         return res.status(200).json(users)
 

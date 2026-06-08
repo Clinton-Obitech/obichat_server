@@ -13,11 +13,25 @@ export const User = async (userId: string) =>
     return data
 }
 
-export const Users = async () =>
+export const Users = async (userId: string) =>
+{
+    const { data, error } = await supabase
+    .from("obichat_private_messages")
+    .select("receiver_id, receiver_username")
+    .eq("sender_id", userId)
+
+    if (error) throw error
+
+    return data
+}
+
+export const Search = async (username: string) =>
 {
     const { data, error } = await supabase
     .from("obichat_users")
     .select("id, username")
+    .eq("username", username)
+    .single();
 
     if (error) throw error
 

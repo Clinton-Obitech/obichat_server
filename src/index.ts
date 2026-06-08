@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
     const userId = (socket as any).userId;
     onlineUsers[userId] = socket.id;
 
-    socket.on("private_message", async ({recieverId, message}) => {
+    socket.on("private_message", async ({recieverId, username, message}) => {
 
         const recieverSocketId = onlineUsers[recieverId];
         const senderId = userId;
@@ -75,20 +75,16 @@ io.on("connection", (socket) => {
         .insert({
             sender_id: senderId,
             receiver_id: recieverId,
+            receiver_username: username,
             message: message
         })
         .select("*")
         .single();
 
-        let msgError = "";
-
-        if (error) {
-            msgError = "message not sent";
-            return console.error(error)
-        }
+        if (error) return console.error(error)
 
         if (recieverSocketId) {
-            io.to(recieverSocketId).emit("receive_message", data, msgError ? msgError : "")
+            io.to(recieverSocketId).emit("receive_message", data)
         }
 
         socket.emit("receive_message", data)
