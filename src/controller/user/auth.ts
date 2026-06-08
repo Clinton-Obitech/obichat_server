@@ -18,7 +18,6 @@ async (req: Request<{}, {}, RegisterBodyType>, res: Response) =>
         }
 
         const user = await User(result.user?.id)
-        const users = await Users(result.user?.id)
 
         const obichatToken = jwt.sign(
             {id: result.user?.id,
@@ -36,7 +35,6 @@ async (req: Request<{}, {}, RegisterBodyType>, res: Response) =>
         return res.status(result.status).json({
             message: result.message,
             user,
-            users
         })
 
     } catch (err) {
@@ -61,7 +59,6 @@ async (req: Request<{}, {}, LoginBodyType>, res: Response) =>
         }
 
         const user = await User(result.user?.id)
-        const users = await Users(result.user?.id)
 
         const obichatToken = jwt.sign(
             {id: result.user?.id,
@@ -79,7 +76,6 @@ async (req: Request<{}, {}, LoginBodyType>, res: Response) =>
         return res.status(result.status).json({
             message: result.message,
             user,
-            users
         })
 
     } catch (err) {
